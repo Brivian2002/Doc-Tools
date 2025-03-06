@@ -35,17 +35,26 @@
         </section>
 
         <section class="tool-container">
-            <input type="file" id="imageInput" accept="image/*">
-            <input type="range" id="qualitySlider" min="10" max="100" value="80">
-            <span>Quality: <span id="qualityValue">80%</span></span>
-            <button class="btn" onclick="handleImageCompression()">Compress Image</button>
-            <div id="output"></div>
+            <div class="upload-section">
+                <input type="file" id="imageInput" accept="image/*">
+                <input type="range" id="qualitySlider" min="10" max="100" value="80">
+                <label>Quality: <span id="qualityValue">80%</span>%</label>
+                <button class="btn" onclick="handleImageCompression()">Compress Image</button>
+            </div>
+
+            <div class="preview-section">
+                <div class="image-container">
+                    <h3>Original Image</h3>
+                    <img id="originalImage" src="" alt="Original Image" class="image-preview">
+                </div>
+                <div class="image-container">
+                    <h3>Compressed Image</h3>
+                    <img id="compressedImage" src="" alt="Compressed Image" class="image-preview">
+                    <a id="downloadLink" class="btn hidden" download="compressed-image.jpg">Download</a>
+                </div>
+            </div>
         </section>
     </main>
-
-    <footer>
-        <p>&copy; 2024 DocTools Hub. All rights reserved.</p>
-    </footer>
 
     <script src="image-compressor.js"></script>
 </body>
