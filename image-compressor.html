@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Compress images online without losing quality">
+    <meta name="keywords" content="image compression, reduce image size, optimize images">
+    <title>Image Compressor - DocTools Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>DocTools Hub</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="image-compressor.html" class="active">Image Compressor</a>
+                <a href="image-resizer.html">Image Resizer</a>
+                <a href="pdf-compressor.html">PDF Compressor</a>
+                <a href="pdf-to-word.html">PDF to Word</a>
+                <a href="image-converter.html">Image Converter</a>
+                <a href="pdf-merger.html">PDF Merger</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Image Compressor</h1>
+            <p>Compress images while maintaining quality</p>
+        </section>
+
+        <section class="tool-container">
+            <input type="file" id="imageInput" accept="image/*">
+            <input type="range" id="qualitySlider" min="10" max="100" value="80">
+            <span>Quality: <span id="qualityValue">80%</span></span>
+            <button class="btn" onclick="handleImageCompression()">Compress Image</button>
+            <div id="output"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 DocTools Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="image-compressor.js"></script>
+</body>
+</html>
