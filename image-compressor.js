@@ -1,15 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const imageInput = document.getElementById('imageInput');
-    const qualitySlider = document.getElementById('qualitySlider');
-    const qualityValue = document.getElementById('qualityValue');
+    const compressionLevel = document.getElementById('compressionLevel');
     const originalImage = document.getElementById('originalImage');
     const compressedImage = document.getElementById('compressedImage');
     const downloadLink = document.getElementById('downloadLink');
-
-    // Update quality value display
-    qualitySlider.addEventListener('input', () => {
-        qualityValue.textContent = qualitySlider.value;
-    });
 
     // Handle file selection and display original image
     imageInput.addEventListener('change', () => {
@@ -32,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const compressedBlob = await compressImage(file, qualitySlider.value);
+        const quality = parseInt(compressionLevel.value);
+        const compressedBlob = await compressImage(file, quality);
         const compressedUrl = URL.createObjectURL(compressedBlob);
 
         compressedImage.src = compressedUrl;
