@@ -3,203 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Compress images online without losing quality">
-    <meta name="keywords" content="image compression, reduce image size, optimize images">
-    <title>Image Compressor Pro</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Using shared CSS -->
+    <title>Image Compression</title>
     <style>
-        /* Centering the tool and matching your design */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
         .container {
-            max-width: 700px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .file-input {
-            width: 100%;
-            padding: 10px;
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .compression-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        select, .btn {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            font-size: 16px;
-        }
-
-        .btn {
-            background: #007bff;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #0056b3;
-        }
-
-        .image-preview {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .image-box {
             flex: 1;
+            padding: 20px;
+        }
+        footer {
+            background-color: #f1f1f1;
             text-align: center;
+            padding: 10px;
+            margin-top: auto;
         }
-
-        .image-box img {
-            width: 90%;
-            max-height: 250px;
-            object-fit: contain;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            display: block;
-            margin: auto;
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
         }
-
-        .image-box h3 {
-            font-weight: bold;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .image-preview {
-                flex-direction: column;
-                gap: 15px;
-            }
+        .image-container img {
+            max-width: 45%;
+            height: auto;
         }
     </style>
 </head>
 <body>
-
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Image Compressor Pro</h1>
-            </div>
-        </nav>
-    </header>
-
-    <main class="container">
-        <!-- File Upload Section -->
-        <input type="file" id="imageInput" accept="image/*" class="file-input">
-        
-        <div class="compression-controls">
+    <div class="container">
+        <h1>Image Compression</h1>
+        <form id="compressForm">
+            <label for="imageUpload">Choose File</label>
+            <input type="file" id="imageUpload" accept="image/*">
+            <br><br>
             <label for="compressionLevel">Compression Level:</label>
             <select id="compressionLevel">
-                <option value="90">Low (90%)</option>
-                <option value="75">Medium (75%)</option>
-                <option value="50">High (50%)</option>
-                <option value="30">Ultra (30%)</option>
+                <option value="0.9">Low (90%)</option>
+                <option value="0.7">Medium (70%)</option>
+                <option value="0.5">High (50%)</option>
             </select>
-            <button class="btn" onclick="handleImageCompression()">Compress Now</button>
-        </div>
-
-        <!-- Image Preview Section -->
-        <section class="image-preview">
-            <div class="image-box">
+            <br><br>
+            <button type="button" onclick="compressImage()">Compress Now</button>
+        </form>
+        <div class="image-container">
+            <div>
                 <h3>Original Image</h3>
-                <img id="originalImage" src="" alt="Original Image" class="hidden">
+                <img id="originalImage" src="" alt="Original Image">
             </div>
-            <div class="image-box">
+            <div>
                 <h3>Compressed Image</h3>
-                <img id="compressedImage" src="" alt="Compressed Image" class="hidden">
-                <a id="downloadLink" class="btn hidden" download="compressed-image.jpg">Download</a>
+                <img id="compressedImage" src="" alt="Compressed Image">
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+    <footer>
+        <p>Footer Content Here</p>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const imageInput = document.getElementById('imageInput');
-            const compressionLevel = document.getElementById('compressionLevel');
+        function compressImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const compressionLevel = parseFloat(document.getElementById('compressionLevel').value);
             const originalImage = document.getElementById('originalImage');
             const compressedImage = document.getElementById('compressedImage');
-            const downloadLink = document.getElementById('downloadLink');
 
-            // Handle file selection and display original image
-            imageInput.addEventListener('change', () => {
-                const file = imageInput.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        originalImage.src = e.target.result;
-                        originalImage.classList.remove("hidden");
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImage.src = e.target.result;
+
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width * compressionLevel;
+                        canvas.height = img.height * compressionLevel;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        compressedImage.src = canvas.toDataURL('image/jpeg', compressionLevel);
                     };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Image Compression Logic
-            async function handleImageCompression() {
-                const file = imageInput.files[0];
-                if (!file) {
-                    alert("Please select an image first!");
-                    return;
-                }
-
-                const quality = parseInt(compressionLevel.value);
-                const compressedBlob = await compressImage(file, quality);
-                const compressedUrl = URL.createObjectURL(compressedBlob);
-
-                compressedImage.src = compressedUrl;
-                compressedImage.classList.remove("hidden");
-                downloadLink.href = compressedUrl;
-                downloadLink.classList.remove("hidden");
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
             }
-
-            async function compressImage(file, quality) {
-                return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.src = event.target.result;
-                        
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            const ctx = canvas.getContext('2d');
-
-                            canvas.width = img.width;
-                            canvas.height = img.height;
-                            ctx.drawImage(img, 0, 0);
-
-                            canvas.toBlob(
-                                (blob) => resolve(blob),
-                                'image/jpeg',
-                                quality / 100
-                            );
-                        };
-                    };
-                });
-            }
-
-            window.handleImageCompression = handleImageCompression;
-        });
+        }
     </script>
-
 </body>
 </html>
